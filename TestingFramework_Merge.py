@@ -501,6 +501,14 @@ if st.button("▶️ Run Selected Tests"):
 
         with pd.ExcelWriter(excel_data, engine='xlsxwriter') as writer:
             workbook = writer.book
+            cell_format_top_left = workbook.add_format({'valign': 'top', 'align': 'left'})
+            header_format = workbook.add_format({
+                'bold': True,
+                'bg_color': '#1F4E78',     # Blue background (Excel-style blue)
+                'font_color': 'white',     # White font
+                'valign': 'top',
+                'align': 'left'
+            })
 
             if "LoginEmail" in logs_df.columns:
                 for email in logs_df["LoginEmail"].dropna().unique():
@@ -511,15 +519,25 @@ if st.button("▶️ Run Selected Tests"):
 
                     # Write headers
                     for col_num, value in enumerate(sheet_df.columns.values):
-                        worksheet.write(0, col_num, value)
-
+                        worksheet.write(0, col_num, value, header_format)
+                    # Apply alignment to all data cells (excluding image insertion)
+                    for row_num in range(1, len(sheet_df) + 1):
+                        for col_num, col_name in enumerate(sheet_df.columns):
+                            if col_name != "screenshot":
+                                max_len = max(sheet_df[col_name].astype(str).map(len).max(),len(str(col_name)))
+                                worksheet.set_column(col_num, col_num, max_len + 2)                            
+                                cell_value = sheet_df.iloc[row_num - 1, col_num]
+                                worksheet.write(row_num, col_num, str(cell_value), cell_format_top_left)
                     # Format screenshot column
                     for col_num, column in enumerate(sheet_df.columns):
+
                         if column == "screenshot":
-                            worksheet.set_column(col_num, col_num, 25)
+                            worksheet.set_column(col_num, col_num, 25)  # Fixed width for images
                             for row_num, path in enumerate(sheet_df["screenshot"], start=1):
+                                max_len = max(sheet_df[column].astype(str).map(len).max(),len(str(column)))
+                                worksheet.set_column(col_num, col_num, max_len + 2)                                            
                                 if os.path.exists(path):
-                                    x_scale, y_scale = get_image_scale(path, 200, 200)
+                                    x_scale, y_scale = get_image_scale(path, 400, 200)
                                     worksheet.set_row(row_num, 153)
                                     worksheet.insert_image(row_num, col_num, path, {
                                         'x_offset': 2,
@@ -528,14 +546,13 @@ if st.button("▶️ Run Selected Tests"):
                                         'y_scale': y_scale,
                                         'object_position': 1
                                     })
-                        else:
-                            worksheet.set_column(col_num, col_num, 20)
+
             else:
                 # Fallback: write full DataFrame to single sheet
                 logs_df.to_excel(writer, index=False, sheet_name='Logs', startrow=1, header=False)
                 worksheet = writer.sheets['Logs']
                 for col_num, value in enumerate(logs_df.columns.values):
-                    worksheet.write(0, col_num, value)
+                    worksheet.write(0, col_num, value, cell_format_top_left)
 
         excel_data.seek(0)
         st.download_button("Download Log Excel", data=excel_data, file_name=excel_filename,
