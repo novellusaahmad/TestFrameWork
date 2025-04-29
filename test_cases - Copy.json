@@ -1,0 +1,498 @@
+[
+    {
+        "name": "log",
+        "steps": [
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/",
+                "wait": 0
+            },
+            {
+                "action": "input",
+                "selector_type": "placeholder",
+                "selector_value": "Email",
+                "wait": 1,
+                "text": "{{LoginEmail}}"
+            },
+            {
+                "action": "click",
+                "selector_type": "id",
+                "selector_value": "kt_sign_in_submit",
+                "wait": 1
+            },
+            {
+                "action": "input",
+                "selector_type": "name",
+                "selector_value": "code",
+                "wait": 1,
+                "text": "{{Password}}"
+            },
+            {
+                "action": "click",
+                "selector_type": "id",
+                "selector_value": "kt_validate_access_code",
+                "wait": 1
+            }
+        ]
+    },
+    {
+        "name": "Broker",
+        "steps": [
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/",
+                "wait": 0
+            },
+            {
+                "action": "input",
+                "selector_type": "placeholder",
+                "selector_value": "Email",
+                "wait": 1,
+                "text": "aahmad@novelluscapital.co.uk"
+            },
+            {
+                "action": "click",
+                "selector_type": "id",
+                "selector_value": "kt_sign_in_submit",
+                "wait": 1
+            },
+            {
+                "action": "input",
+                "selector_type": "name",
+                "selector_value": "code",
+                "wait": 1,
+                "text": "747982"
+            },
+            {
+                "action": "click",
+                "selector_type": "id",
+                "selector_value": "kt_validate_access_code",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/user-management/brokers/brokers-listing",
+                "wait": 1
+            },
+            {
+                "action": "click",
+                "selector_type": "id",
+                "selector_value": "users-brokers-listing-add-new-brokers",
+                "wait": 1
+            },
+            {
+                "action": "input",
+                "selector_type": "id",
+                "selector_value": "broker_create_edit_modal_email",
+                "wait": 1,
+                "text": "ASAD@GMAIL.COM"
+            },
+            {
+                "action": "input",
+                "selector_type": "id",
+                "selector_value": "broker_create_edit_modal_name",
+                "wait": 0,
+                "text": "Asad Ahmad"
+            }
+        ]
+    },
+    {
+        "name": "Create case",
+        "steps": [
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/",
+                "wait": 0
+            },
+            {
+                "action": "input",
+                "selector_type": "placeholder",
+                "selector_value": "Email",
+                "wait": 1,
+                "text": "{{LoginEmail}}"
+            },
+            {
+                "action": "click",
+                "selector_type": "id",
+                "selector_value": "kt_sign_in_submit",
+                "wait": 1
+            },
+            {
+                "action": "input",
+                "selector_type": "name",
+                "selector_value": "code",
+                "wait": 1,
+                "text": "{{Password}}"
+            },
+            {
+                "action": "click",
+                "selector_type": "id",
+                "selector_value": "kt_validate_access_code",
+                "wait": 1
+            },
+            {
+                "action": "click",
+                "selector_type": "id",
+                "selector_value": "cases-cases-listing-add-case",
+                "wait": 2
+            },
+            {
+                "action": "input",
+                "selector_type": "id",
+                "selector_value": "deal_create_edit_form_name",
+                "wait": 0,
+                "text": "{{CASE_NAME}}"
+            },
+            {
+                "action": "click",
+                "selector_type": "id",
+                "selector_value": "deal_create_edit_form_case_owner_id_select",
+                "wait": 10
+            },
+            {
+                "action": "input",
+                "selector_type": "id",
+                "selector_value": "deal_create_edit_form_case_owner_id_select",
+                "wait": 3,
+                "text": "{{CASE_OWNER}}"
+            },
+            {
+                "action": "click",
+                "selector_type": "id",
+                "selector_value": "case-management-deal-submit-button",
+                "wait": 0
+            }
+        ]
+    },
+    {
+        "name": "UI Error Test",
+        "steps": [
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/#/sign-in",
+                "wait": 0
+            },
+            {
+                "action": "input",
+                "selector_type": "placeholder",
+                "selector_value": "Email",
+                "wait": 1,
+                "text": "{{LoginEmail}}"
+            },
+            {
+                "action": "click",
+                "selector_type": "id",
+                "selector_value": "kt_sign_in_submit",
+                "wait": 1
+            },
+            {
+                "action": "input",
+                "selector_type": "name",
+                "selector_value": "code",
+                "wait": 1,
+                "text": "{{Password}}"
+            },
+            {
+                "action": "click",
+                "selector_type": "id",
+                "selector_value": "kt_validate_access_code",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/case-manager/deals-listing",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/user-management/users-listing",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/user-management/introducers-listing",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/user-management/client-individual-listing",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/user-management/client-companies-listing",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/user-management/client-group-listing",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/user-management/brokers/brokers-listing",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/user-management/brokers/brokers-agents-listing",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/system/settings/notification-rules-listing",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/system/settings/notification-templates-listing",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/system/settings/feetype-listing",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/system/settings/funder-interest-rate-listing",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/system/settings/introducer-types-listing",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/system/settings/assetstype-listing",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/system/settings/lenders-listing",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/system/settings/service-providers-listing",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/system/settings/variable-rates-listing",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/system/settings/financial-settings-listing",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/system/settings/forms-listing",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/system/settings/history-listing",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/system/settings/forms-type-listing",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/system/settings/tasks-listing",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/system/settings/tasks-listing?lendingTypeId=2",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/system/settings/tasks-listing?lendingTypeId=3",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/system/settings/tasks-listing?lendingTypeId=4",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/system/settings/settings-deal-listing",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/ccr-reports/ccr-reports-listing",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/loan-notes/csx-loans",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/loan-notes/intercompany-loans",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/case-manager/deals-listing-requests",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/loan-notes/exception-loans",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/case-manager/deals-listing-requests",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/case-manager/deals/1/drawdown-comparison",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/case-manager/deals/1/drawdown-profile-listing",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/case-manager/deals/1/drawdown-lifetime",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/case-manager/deals/1/drawdown-notes",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/case-manager/deals/1/drawdown-linked-cases",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/case-manager/deals/1/borrowers-listing",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/case-manager/deals/1/forms-status-listing",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/case-manager/deals/1/introducers-listing",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/case-manager/deals-create-update/1",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/case-manager/deals/1/base-floor-rates-listing",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/case-manager/deals/1/assets-listing",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/case-manager/deals/1/fees-listing",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/case-manager/deals/1/exit-fees-listing",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/case-manager/deals/1/my-tasks-listing",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/case-manager/deals/1/completed-tasks-listing",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/case-manager/deals/1/tasks-listing",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/case-manager/deals/1/deal-settings-listing",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/case-manager/deals/1/documents-listing-category",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/case-manager/deals/1/documents-manager-listing",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/case-manager/deals/1/activity-logs",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/case-manager/deals/1/quotes-listing",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/case-manager/deals/1/notification-listing",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/case-manager/deals/1/notification-rules-from-deal",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/case-manager/deals/1/notification-rules-listing",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/case-manager/deals/1/settlement-listing",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/user-management/client-companies-logs/261",
+                "wait": 1
+            },
+            {
+                "action": "visit",
+                "url": "https://qa.lendingdynamics.com/dashboard#/user-management/brokers/brokers-listing-logs/514",
+                "wait": 1
+            }
+        ]
+    }
+]
