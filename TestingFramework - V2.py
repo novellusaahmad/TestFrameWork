@@ -2,8 +2,11 @@ import streamlit as st
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.edge.options import Options as EdgeOptions
+from selenium.webdriver.edge.service import Service as EdgeService
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+
 import json
 import time
 import os
@@ -17,6 +20,7 @@ from PIL import Image
 
 TARGET_WIDTH_PX = 100
 TARGET_HEIGHT_PX = 100
+
 
 def get_image_scale(img_path, target_width_px=200, target_height_px=200):
     try:
@@ -148,13 +152,14 @@ def run_test_case(test_case, headless=True, repeat=1, csv_row=None):
     logs_output = []
     for _ in range(repeat):
         try:
-            options = Options()
+            options = EdgeOptions()
             if headless:
                 options.add_argument("--headless=new")
             options.add_argument("--incognito")
             options.add_argument("--disable-extensions")
             options.add_argument("--disable-cache")
-            driver = webdriver.Chrome(options=options)
+            # Automatically finds Microsoft Edge installed on Windows in its default path
+            driver = webdriver.Edge(service=EdgeService(), options=options)
             driver.maximize_window()
             driver.delete_all_cookies()
             driver.refresh()
@@ -270,6 +275,7 @@ def run_test_case(test_case, headless=True, repeat=1, csv_row=None):
                 if csv_row is not None and "LoginEmail" in csv_row:
                     step_log["LoginEmail"] = csv_row["LoginEmail"]
                 logs_output.append(step_log)
+                yield step_log  # 👈 YIELD instead of collecting in a list
                 if wait_time > 0:
                     time.sleep(wait_time)
 
@@ -293,22 +299,7 @@ if "editing_index" not in st.session_state:
 if "active_test_name" not in st.session_state:
     st.session_state.active_test_name = ""
 
-
-### HTML TAG SEARCH MOVED TO THE SIDE BAR###
-#st.subheader("🔍 Identify Selector from HTML Tag")
-#
-#html_tag_input = st.text_area("Enter the HTML Tag", height=100)
-#
-#if html_tag_input:
-#    selectors = identify_selectors_from_html(html_tag_input)
-#    
-#    if selectors:
-#        st.write("### Suggested Selectors:")
-#        for selector_type, selector_value in selectors.items():
-#            st.write(f"- **{selector_type}**: `{selector_value}`")
-#    else:
-#        st.warning("Unable to parse the HTML tag. Please check the input format.")
-
+tab1, tab2, tab3, tab4 = st.tabs(["🧱 Build Test Case", "🧪 Run Tests", "📄 Upload CSV", "📊 View Logs"])
 
 
 test_cases = load_test_cases()
@@ -463,20 +454,67 @@ st.markdown(
 )
 logs_output = []
 if st.button("▶️ Run Selected Tests"):
-    st.subheader("📜 Logs")
+    st.subheader("📜 Live Logs")
+
+    total_runs = len(selected_cases) * repeat * (len(csv_data) if csv_data is not None else 1)
+    progress_bar = st.progress(0)
+    status_box = st.empty()
+    log_container = st.container()
+    completed = 0
+
     for name in selected_cases:
         test = next(tc for tc in test_cases if tc["name"] == name)
         if csv_data is not None:
             for idx, row in csv_data.iterrows():
-                logs = run_test_case(test, headless=headless, repeat=repeat, csv_row=row)
-                for log in logs:
-                    st.write(log)
-                    logs_output.append(log)
+                user_id = row.get("LoginEmail", f"Row {idx+1}")
+                status_box.info(f"Running `{name}` for `{user_id}` ({completed+1}/{total_runs})")
+                logs = list(run_test_case(test, headless=headless, repeat=repeat, csv_row=row))
+                group_title = f"🧪 {name} | 👤 {user_id}"
+                with log_container.expander(group_title, expanded=False):
+                    for i, log in enumerate(logs):
+                        st.markdown(f"### 🔹 Step {i+1}: `{log.get('action', '').upper()}` - {log.get('status', 'Unknown')}")
+                        #st.markdown(f"**Selector Type:** `{log.get('selector_type', '')}`")
+                        #st.markdown(f"**Selector Value:** `{log.get('selector_value', '')}`")
+                        #st.markdown(f"**Text:** `{log.get('text', '')}`")
+                        #st.markdown(f"**Wait Time:** `{log.get('wait_time', '')}`")
+                        #st.markdown(f"**Actual URL:** `{log.get('actual_url', '')}`")
+                        if log.get("notifications"):
+                            st.markdown("**Notifications:**")
+                            st.write(log["notifications"])
+                        if log.get("screenshot") and os.path.exists(log["screenshot"]):
+                            st.image(log["screenshot"], caption="📸 Screenshot", use_container_width=True)
+                        st.markdown("---")
+
+                    logs_output.extend(logs)
+                completed += 1
+                progress_bar.progress(completed / total_runs)
+
         else:
-            logs = run_test_case(test, headless=headless, repeat=repeat)
-            for log in logs:
-                st.write(log)
-                logs_output.append(log)
+            for r in range(repeat):
+                status_box.info(f"Running `{name}` ({completed+1}/{total_runs})")
+                logs = list(run_test_case(test, headless=headless, repeat=1))
+
+                for i, log in enumerate(logs):
+                    with log_container.expander(f"🔹 Step {i+1}: {log.get('action', '').upper()} - {log.get('status', 'Unknown')}"):
+                        st.markdown(f"**Selector Type:** `{log.get('selector_type', '')}`")
+                        st.markdown(f"**Selector Value:** `{log.get('selector_value', '')}`")
+                        st.markdown(f"**Text:** `{log.get('text', '')}`")
+                        st.markdown(f"**Wait Time:** `{log.get('wait_time', '')}`")
+                        st.markdown(f"**Actual URL:** `{log.get('actual_url', '')}`")
+                        if log.get("notifications"):
+                            st.markdown("**Notifications:**")
+                            st.write(log["notifications"])
+                        if log.get("screenshot") and os.path.exists(log["screenshot"]):
+                            st.image(log["screenshot"], caption="📸 Screenshot", use_container_width=True)
+
+                    logs_output.append(log)
+                    time.sleep(0.05)
+
+                completed += 1
+                progress_bar.progress(completed / total_runs)
+
+    progress_bar.empty()
+    status_box.success("🎉 All tests completed!")
 
     logs_df = pd.DataFrame(logs_output)
 
